@@ -1,0 +1,20 @@
+name: Deploy (infra + backend + frontend)
+
+on:
+  push:
+  workflow_dispatch:
+
+env:
+  AWS_REGION: us-east-1                       
+
+jobs:
+  infra_and_backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v5.1.0
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
